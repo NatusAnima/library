@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <script src="scripts.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- A button to open the popup form -->
+    <button class="open-button" onclick="openForm()">Add New Book</button>
+
+    <!-- The form -->
+    <div class="form-popup" id="myForm">
+        <form action="#" class="form-container">
+            <h1>New Book</h1>
+
+            <label for="title"><b>Title</b></label>
+            <input id="title" type="text" placeholder="Enter Title" name="title" required>
+
+            <label for="author"><b>Author</b></label>
+            <input id="author" type="text" placeholder="Enter Author Name" name="author" required>
+
+            <label for="pages"><b>Amount of Pages</b></label>
+            <input id="pages" type="number" placeholder="Enter Amount of Pages" name="title" required>
+
+            <label for="read"><b>Has Been Read</b></label>
+            <select id="read" id="read" name="read" required>
+                <option value="1">Read</option>
+                <option value="0" selected>Not Read</option>
+            </select>
+
+
+            <button type="button" class="btn" onclick="submitForm()">Add</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </form>
+    </div>
+
+    <div id="cards">
+        <div class="card">
+            <h2 class="card-title">Test</h2>
+            <img src="hobbit.jpg" alt="">
+            <p class="card-desc">Title by Author <br> Pages:777 <br> Status: Not Read</p>
+            <div class="delete-container">
+                <button class="delete-button">Delete</button>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            
+        </div>
+    </div>
+</body>
+
+</html>
