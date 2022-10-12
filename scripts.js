@@ -1,12 +1,3 @@
-
-/* 
-    To-Do list:
-    Add option to change cover
-    Add button to remove the book card
-    Add button to change read status
-
-*/
-
 let myLibrary = [];
 
 class Book {
@@ -16,27 +7,31 @@ class Book {
         this.pages = pages;
         this.read = read;
         this.info = function () {
-            return (title + " by " + author + 
-            "\nPages:" + pages + 
-            "\nStatus:" + (read ? "Read" : "Not Read"));
+            return (this.title + " by " + this.author +
+                "\nPages:" + this.pages +
+                "\nStatus:" + (this.read ? "Read" : "Not Read"));
         };
     }
 }
 
+Book.prototype.toggleRead = function () {
+    this.read = !this.read;
+}
 
+let index = myLibrary.length;
 
 function addBookToLibrary(title, author, pages, readStatus) {
 
-    let index = myLibrary.length;
+
 
     let newBook = new Book(title, author, pages, readStatus);
     myLibrary.push(newBook);
+    //clearing all the divs before adding all of them
 
     removeAllChildNodes(document.getElementById("cards"));
+
     //buckle up thats going to be a rough ride
     myLibrary.forEach(book => {
-        //clearing all the divs before adding all of them
-
         // making the card div
         let card = document.createElement("div");
         card.className = "card";
@@ -55,23 +50,40 @@ function addBookToLibrary(title, author, pages, readStatus) {
         cardDesc.className = "card-desc";
         cardDesc.innerText = book.info();
 
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.dataset.indexCheckbox = index;
+        if (book.read == true) {
+            checkbox.checked = true;
+        }
+
+        checkbox.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                myLibrary[event.currentTarget.dataset.indexCheckbox].toggleRead();
+                updateCardDesc(event.currentTarget.dataset.indexCheckbox);
+            }
+            else {
+                myLibrary[event.currentTarget.dataset.indexCheckbox].toggleRead();
+                updateCardDesc(event.currentTarget.dataset.indexCheckbox);
+            }
+        })
+
         let deleteContainer = document.createElement("div");
         deleteContainer.className = "delete-container";
 
         let deleteButton = document.createElement("div");
         deleteButton.innerText = "Delete"
         deleteButton.className = "delete-button";
-        deleteButton.dataset.index = index++;
-        deleteButton.setAttribute("onclick","deleteBook(this)")
+        deleteButton.dataset.index = index;
+        deleteButton.setAttribute("onclick", "deleteBook(this)")
 
         deleteContainer.appendChild(deleteButton);
 
         let slider = document.createElement("label");
         slider.className = "switch";
 
-        let checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        
+
+
         let sliderRound = document.createElement("span");
         sliderRound.className = "slider round"
 
@@ -86,7 +98,14 @@ function addBookToLibrary(title, author, pages, readStatus) {
         card.appendChild(deleteContainer);
 
         document.getElementById("cards").appendChild(card);
+
+        index++;
     });
+}
+
+function updateCardDesc(index){
+    let card = document.querySelector('[data-index-card="' + index + '"]');
+    card.firstChild.nextSibling.nextSibling.innerText = myLibrary[index].info();;
 }
 
 function openForm() {
@@ -116,19 +135,20 @@ function submitForm() {
 }
 
 function removeAllChildNodes(parent) {
+    index = 0;
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
 }
 
-function deleteBook(indexPointer){
-    
+function deleteBook(indexPointer) {
+
     index = indexPointer.dataset.index;
-    if (index > -1){
+    if (index > -1) {
         myLibrary.splice(index, 1);
     }
-    
-    let indexCard = 
-    document.querySelector('[data-index-card="' + index + '"]');
+
+    let indexCard =
+        document.querySelector('[data-index-card="' + index + '"]');
     indexCard.remove();
 }
